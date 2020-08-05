@@ -12,7 +12,7 @@ from google.auth.transport.requests import Request
 SCOPES = ['https://www.googleapis.com/auth/script.projects',
 'https://www.googleapis.com/auth/drive.scripts','https://www.googleapis.com/auth/script.container.ui']
 
-homolog_script_id = '1omUO0ZnTFGCNurohbBZCdI5eo7NItk4TbG6RA_dc1qmI3_9v1KoZp9w1'
+homolog_script_id = '' #---> Add your homologation sheet code here, this code is going to production sheets
 
 def main():
     """Calls the Apps Script API.
@@ -37,13 +37,11 @@ def main():
             pickle.dump(creds, token)
 
     script_service = build('script', 'v1', credentials=creds)
-    #drive_service = build('drive', 'v3', credentials=creds)
 
     # Call the Apps Script API
     try:
 
         homolog_script_request = script_service.projects().getContent(scriptId=homolog_script_id).execute()
-        #response = json.loads(homolog_script_request)
 
         update_files = homolog_script_request.get("files")
 
@@ -53,7 +51,7 @@ def main():
 
         for row in csv_reader:
             if (len(row) == 2):
-                if (row[1] == "Smart Leilões Code"):
+                if (row[1] == ""): #---- Add script bound container name here, if parametrized
                     script_id = row[0]
                     update_script_request = script_service.projects().updateContent(
                         scriptId=script_id,
